@@ -1,17 +1,9 @@
 <?php
-//use PDO;
-
-class Query extends Conexion {
-    private $pdo;
-    /** @var PDO */
-    private $con;
-    private $sql;
-    private $datos;
-
+class Query extends Conexion{
+    private $pdo, $con, $sql, $datos;
     public function __construct() {
-        
         $this->pdo = new Conexion();
-        $this->con = $this->pdo->getConection();
+        $this->con = $this->pdo->conect();
     }
     public function select(string $sql)
     {
@@ -29,7 +21,6 @@ class Query extends Conexion {
         $data = $resul->fetchAll(PDO::FETCH_ASSOC);
         return $data;
     }
-
     public function save(string $sql, array $datos)
     {
         $this->sql = $sql;

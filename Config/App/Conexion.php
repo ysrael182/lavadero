@@ -1,15 +1,8 @@
 <?php
-class Conexion {
-    /** @var mysqli */
+class Conexion{
     private $conect;
-    
     public function __construct()
     {
-        /*$this->conect = new mysqli(host, user, pass);
-        if ($this->conect->connect_error) {
-            echo 'Error : ('. $this->conect->connect_errno .') '. $this->conect->connect_error;
-        }*/
-
         $pdo = "mysql:host=".host.";dbname=".db.";.charset.";
         try {
             $this->conect = new PDO($pdo, user, pass);
@@ -18,7 +11,7 @@ class Conexion {
             echo "Error en la conexion".$e->getMessage();
         }
     }
-    public function getConection()
+    public function conect()
     {
         return $this->conect;
     }

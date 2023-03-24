@@ -14,9 +14,10 @@
     <link href="<?php echo base_url; ?>Assets/css/estilos.css" rel="stylesheet" />
     <script src="<?php echo base_url; ?>Assets/js/all.min.js"></script>
 </head>
-<?php $isAdmin = $_SESSION['id_usuario'] == 1 && $_SESSION['rol'] == 'ADMIN'; ?>
+<?php $isAdmin = $_SESSION['rol'] == 'ADMIN'; ?>
+<?php $isUser = $_SESSION['rol'] == 'USER'; ?>
 <body class="sb-nav-fixed">
-    <nav class="sb-topnav navbar navbar-expand navbar-dark <?php if ( $isAdmin) { echo 'bg-dark'; } else { echo 'bg-success'; } ?>">
+    <nav class="sb-topnav navbar navbar-expand navbar-dark <?php if ( $isAdmin) { echo 'bg-dark'; } elseif ($isUser) { echo 'bg-success'; } else { echo 'bg-info'; } ?>">
         <!-- Navbar Brand-->
         <a class="navbar-brand ps-3" href="<?php echo base_url; ?>Administracion/home">Vida Informatico</a>
         <!-- Sidebar Toggle-->
@@ -50,29 +51,30 @@
                             </div>
                             Datos Personales
                         </a>
-                        <?php if ($isAdmin) { ?>
-                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
-                                <div class="sb-nav-link-icon"><i class="fas fa-cogs fa-2x"></i></div>
-                                Administración
-                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            <?php if ($isAdmin) { ?>
+                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-cogs fa-2x"></i></div>
+                                    Administración
+                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                </a>
+                                <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                    <nav class="sb-sidenav-menu-nested nav">
+                                        <a class="nav-link" href="<?php echo base_url; ?>Usuarios">Usuarios</a>
+                                        <a class="nav-link" href="<?php echo base_url; ?>Administracion/moneda">Monedas</a>
+                                        <a class="nav-link" href="<?php echo base_url; ?>Administracion">Configuración</a>
+                                    </nav>
+                                </div>
+                            <?php } ?>
+                            <a class="nav-link" href="<?php echo base_url; ?>Clientes">
+                                <div class="sb-nav-link-icon"><i class="fas fa-users fa-2x"></i></div>
+                                Clientes
                             </a>
-                            <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
-                                <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="<?php echo base_url; ?>Usuarios">Usuarios</a>
-                                    <a class="nav-link" href="<?php echo base_url; ?>Administracion/moneda">Monedas</a>
-                                    <a class="nav-link" href="<?php echo base_url; ?>Administracion">Configuración</a>
-                                </nav>
-                            </div>
-                        <?php } ?>
-                        <a class="nav-link" href="<?php echo base_url; ?>Clientes">
-                            <div class="sb-nav-link-icon"><i class="fas fa-users fa-2x"></i></div>
-                            Clientes
-                        </a>
+                            <?php if($isUser || $isAdmin): ?>
                             <a class="nav-link" href="<?php echo base_url; ?>Documentos">
                                 <div class="sb-nav-link-icon"><i class="fas fa-id-card fa-2x"></i></div>
                                 Documentos
                             </a>
-
+                            <?php endif; ?>    
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseVehiculos" aria-expanded="false" aria-controls="collapseVehiculos">
                                 <div class="sb-nav-link-icon"><i class="fas fa-truck-moving fa-2x"></i></div>
                                 Vehículos
@@ -85,15 +87,19 @@
                                     <a class="nav-link" href="<?php echo base_url; ?>Vehiculos">Vehiculos</a>
                                 </nav>
                             </div>
-                        <a class="nav-link" href="<?php echo base_url; ?>Alquiler">
-                                <div class="sb-nav-link-icon"><i class="fas fa-hourglass-start fa-2x"></i></div>
-                                Alquiler de Vehículos
-                        </a>
-                        <?php if ($isAdmin) : ?>
+                        <?php if($isUser || $isAdmin): ?>    
+                            <a class="nav-link" href="<?php echo base_url; ?>Alquiler">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-hourglass-start fa-2x"></i></div>
+                                    Alquiler de Vehículos
+                            </a>
                             <a class="nav-link" href="<?php echo base_url; ?>Alquiler/pdfAlquiler" target="_blank">
                                 <div class="sb-nav-link-icon"><i class="fas fa-file-pdf fa-2x"></i></div>
                                 Reporte Prestamo
                             </a>
+                        <?php endif; ?>
+                        
+                            
+                        <?php if ($isAdmin) : ?>    
                             <a class="nav-link" href="<?php echo base_url; ?>Alquiler/pdfAlquilerMensual" target="_blank">
                                 <div class="sb-nav-link-icon"><i class="fas fa-file-pdf fa-2x"></i></div>
                                 Reporte Mensual Prestamo

@@ -1,5 +1,5 @@
 <?php
-class UsuariosModel extends Query {
+class UsuariosModel extends Query{
     public function __construct()
     {
         parent::__construct();

@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 
@@ -20,7 +19,7 @@
         <div class="login-content">
             <form id="frmLogin" class="form" onsubmit="frmLogin(event)" autocomplete="off">
                 <img src="<?php echo base_url; ?>Assets/img/avatar.svg">
-                <h3 class="title">Vida Informático</h3>
+                <h3 class="title">Alquiler de coches</h3>
                 <div class="input-div one">
                     <div class="i">
                         <i class="fas fa-user"></i>

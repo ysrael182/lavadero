@@ -1,5 +1,5 @@
 <?php include "Views/Templates/header.php"; ?>
-<button class="btn btn-outline-primary mb-2" type="button" onclick="frmUsuario();"><i class="fas fa-plus"></i></button>
+<button class="btn btn-outline-danger mb-2" type="button" onclick="frmUsuario();"><i class="fas fa-plus"></i></button>
 <a class="btn btn-outline-warning mb-2" href="<?php echo base_url; ?>Usuarios/inactivos"><i class="fas fa-trash"></i></a>
 <div class="card">
     <div class="card-header bg-info text-white">
@@ -85,6 +85,7 @@
                                 <option selected>Rol</option>
                                 <option value="ADMIN">Admin</option>
                                 <option value="USER">User</option>
+                                <option value="LIMPIEZA">Limpieza</option>
                             </select>
                         </div>
                     </div>

@@ -2,6 +2,7 @@
 class Usuarios extends Controller{
     public function __construct() {
         session_start();
+        
         parent::__construct();
     }
     public function index()
@@ -52,7 +53,6 @@ class Usuarios extends Controller{
                 $msg = "Usuario o contraseña incorrecta";
             }
         }
-        //var_dump($_SESSION);
         echo json_encode($msg, JSON_UNESCAPED_UNICODE);
         die();
     }
@@ -71,7 +71,7 @@ class Usuarios extends Controller{
             $id = strClean($_POST['id']);
             $hash = hash("SHA256", $clave);
             $rol = strClean($_POST['tipoUsuario']);
-            if (empty($usuario) || empty($nombre) || empty($correo) || empty($telefono) || empty($rol)) {
+            if (empty($usuario) || empty($nombre) || empty($correo) || empty($telefono)) {
                 $msg = array('msg' => 'Todo los campos son obligatorios', 'icono' => 'warning');
             } else {
                 if ($id == "") {
