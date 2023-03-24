@@ -232,4 +232,73 @@ class Alquiler extends Controller
             $pdf->Output();
         }
     }
+
+    public function pdfAlquilerMensual()
+    {
+        $empresa = $this->model->getEmpresa();
+        $alquiler = $this->model->getAlquiler();
+        if (empty($alquiler)) {
+            echo 'No hay registro';
+        } else {
+            $register = [];
+        
+            foreach($alquiler as $row) {
+                $date = $row['fecha_devolucion'];
+                $date = date('Y, F', strtotime($date));
+                $numberCars = isset($register[$date]) && isset($register[$date]['cars']) ? $register[$date]['cars'] + 1 : 1;
+                $precio = isset($register[$date]) && isset($register[$date]['precio']) ? $register[$date]['precio'] : 0;
+                $precio = $precio + ($row['num_dias']*$row['precio_dia']);
+                $register[$date] = [
+                    'cars' => $numberCars,
+                    'ingreso' => $precio,
+                ];
+            }
+            ksort($register);
+            require('Libraries/fpdf/fpdf.php');
+            include('Libraries/phpqrcode/qrlib.php');
+            $pdf = new FPDF('L', 'mm', 'A4');
+            $pdf->AddPage();
+            $pdf->SetMargins(5, 0, 0);
+            $pdf->SetTitle('Reporte Alquiler');
+            $pdf->SetFont('Arial', '', 15);
+            $pdf->Cell(280, 8, utf8_decode($empresa['nombre']), 0, 1, 'C');
+            QRcode::png($empresa['ruc'], 'Assets/qr.png');
+            $pdf->Image('Assets/qr.png', 140, 18, 25, 25);
+            $pdf->Image('Assets/img/logo.png', 250, 10, 25, 25);
+            $pdf->SetFont('Arial', '', 12);
+            $pdf->Cell(25, 5, 'Ruc: ', 0, 0, 'L');
+            $pdf->Cell(20, 5, $empresa['ruc'], 0, 1, 'L');
+            $pdf->Cell(25, 5, utf8_decode('Teléfono: '), 0, 0, 'L');
+            $pdf->Cell(20, 5, $empresa['telefono'], 0, 1, 'L');
+            $pdf->Cell(25, 5, utf8_decode('Correo: '), 0, 0, 'L');
+            $pdf->Cell(20, 5, utf8_decode($empresa['correo']), 0, 1, 'L');
+            $pdf->Cell(25, 5, utf8_decode('Dirección: '), 0, 0, 'L');
+            $pdf->Cell(20, 5, utf8_decode($empresa['direccion']), 0, 1, 'L');
+            $pdf->Ln(10);
+            //Encabezado de productos
+            $pdf->SetFillColor(0, 0, 0);
+            $pdf->SetTextColor(255, 255, 255);
+            $pdf->SetFont('Arial', '', 12);
+            $pdf->Cell(289, 5, 'Detalle de Alquiler por mes', 1, 1, 'C', true);
+            $pdf->SetFont('Arial', '', 10);
+            $pdf->SetFillColor(155, 155, 155);
+            $pdf->SetTextColor(255, 255, 255);
+
+            $pdf->Cell(100, 5, 'Mes', 1, 0, 'L', true);
+            $pdf->Cell(95, 5, utf8_decode('Número de Vehículos'), 1, 0, 'L', true);
+            $pdf->Cell(94, 5, utf8_decode('Total'), 1, 0, 'L', true);
+
+            $pdf->SetTextColor(0, 0, 0);
+            $line = 5;
+            foreach ($register as $key =>$row) {
+                $pdf->Ln($line);
+                $pdf->Cell(100, 5, utf8_decode($key), 1, 0, 'L');
+                $pdf->Cell(95, 5, utf8_decode($row['cars']), 1, 0, 'L');
+                $pdf->Cell(94, 5, utf8_decode($row['ingreso']), 1, 0, 'L');
+                $pdf->SetTextColor(0, 0, 0);
+                $line = $line + 1;
+            }
+            $pdf->Output();
+        }
+    }
 }

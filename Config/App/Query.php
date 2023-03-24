@@ -1,9 +1,9 @@
 <?php
-//use \mysqli_connect;
+//use PDO;
 
 class Query extends Conexion {
     private $pdo;
-    /** @var mysqli */
+    /** @var PDO */
     private $con;
     private $sql;
     private $datos;
@@ -29,6 +29,7 @@ class Query extends Conexion {
         $data = $resul->fetchAll(PDO::FETCH_ASSOC);
         return $data;
     }
+
     public function save(string $sql, array $datos)
     {
         $this->sql = $sql;

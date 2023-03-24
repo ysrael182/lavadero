@@ -6,8 +6,10 @@ class UsuariosModel extends Query {
     }
     public function getUsuario(string $usuario, string $clave)
     {
-        $sql = "SELECT * FROM usuarios WHERE usuario = '$usuario' AND clave = '$clave'";
-        //$sql = "SELECT * FROM usuarios WHERE usuario = '$usuario'";
+        $sql = <<<SQL
+        SELECT usuarios.*, rol.nombre as rol FROM usuarios RIGHT JOIN usuario_rol ON usuarios.id = usuario_rol.usuarioId
+        RIGHT JOIN rol ON rol.rolId = usuario_rol.rolId WHERE usuarios.usuario = '{$usuario}' AND usuarios.clave = '{$clave}';        
+SQL;
         $data = $this->select($sql);
         return $data;
     }
@@ -23,18 +25,26 @@ class UsuariosModel extends Query {
         $data = $this->selectAll($sql);
         return $data;
     }
-    public function registrarUsuario(string $usuario, string $nombre, string $correo, string $telefono, string $clave)
+    public function registrarUsuario(string $usuario, string $nombre, string $correo, string $telefono, string $clave, string $rol)
     {
         $vericar = "SELECT * FROM usuarios WHERE usuario = '$usuario' OR correo = '$correo'";
         $existe = $this->select($vericar);
         if (empty($existe)) {
-            # code...
             $sql = "INSERT INTO usuarios(usuario, nombre, correo,telefono, clave) VALUES (?,?,?,?,?)";
             $datos = array($usuario, $nombre, $correo, $telefono, $clave);
-            $data = $this->save($sql, $datos);
-            if ($data == 1) {
+            $userId = $this->insertar($sql, $datos);
+            if ($userId ) {
+                $rol = $rol ? $rol :'USER';
+                $sqlRol = "SELECT rolId from rol where nombre = '$rol'";
+                $rolData = $this->select($sqlRol);
+                if ($rolData && isset($rolData['rolId'])) {
+                    $rolId = $rolData['rolId'];
+                    $sql = "INSERT INTO usuario_rol(usuarioId, rolId) VALUES (?,?)";
+                    $datos = array($userId, $rolId);
+                    $this->insertar($sql, $datos);
+                }
                 $res = "ok";
-            }else{
+            } else {
                 $res = "error";
             }
         }else{

@@ -14,9 +14,9 @@
     <link href="<?php echo base_url; ?>Assets/css/estilos.css" rel="stylesheet" />
     <script src="<?php echo base_url; ?>Assets/js/all.min.js"></script>
 </head>
-
+<?php $isAdmin = $_SESSION['id_usuario'] == 1 && $_SESSION['rol'] == 'ADMIN'; ?>
 <body class="sb-nav-fixed">
-    <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+    <nav class="sb-topnav navbar navbar-expand navbar-dark <?php if ( $isAdmin) { echo 'bg-dark'; } else { echo 'bg-success'; } ?>">
         <!-- Navbar Brand-->
         <a class="navbar-brand ps-3" href="<?php echo base_url; ?>Administracion/home">Vida Informatico</a>
         <!-- Sidebar Toggle-->
@@ -41,7 +41,7 @@
     </nav>
     <div id="layoutSidenav">
         <div id="layoutSidenav_nav">
-            <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+            <nav class="sb-sidenav accordion <?php if ( $isAdmin) { echo 'sb-sidenav-dark'; } else { echo 'sb-sidenav-light'; } ?>" id="sidenavAccordion">
                 <div class="sb-sidenav-menu">
                     <div class="nav">
                         <a class="nav-link active bg-info" href="<?php echo base_url; ?>Usuarios/perfil">
@@ -50,25 +50,24 @@
                             </div>
                             Datos Personales
                         </a>
-                        <?php if ($_SESSION['id_usuario'] == 1) { ?>
-                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
-                            <div class="sb-nav-link-icon"><i class="fas fa-cogs fa-2x"></i></div>
-                            Administración
-                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                        </a>
-                        <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
-                            <nav class="sb-sidenav-menu-nested nav">
-                                <a class="nav-link" href="<?php echo base_url; ?>Usuarios">Usuarios</a>
-                                <a class="nav-link" href="<?php echo base_url; ?>Administracion/moneda">Monedas</a>
-                                <a class="nav-link" href="<?php echo base_url; ?>Administracion">Configuración</a>
-                            </nav>
-                        </div>
+                        <?php if ($isAdmin) { ?>
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+                                <div class="sb-nav-link-icon"><i class="fas fa-cogs fa-2x"></i></div>
+                                Administración
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="<?php echo base_url; ?>Usuarios">Usuarios</a>
+                                    <a class="nav-link" href="<?php echo base_url; ?>Administracion/moneda">Monedas</a>
+                                    <a class="nav-link" href="<?php echo base_url; ?>Administracion">Configuración</a>
+                                </nav>
+                            </div>
                         <?php } ?>
                         <a class="nav-link" href="<?php echo base_url; ?>Clientes">
                             <div class="sb-nav-link-icon"><i class="fas fa-users fa-2x"></i></div>
                             Clientes
                         </a>
-                        <?php if ($_SESSION['id_usuario'] == 1) { ?>
                             <a class="nav-link" href="<?php echo base_url; ?>Documentos">
                                 <div class="sb-nav-link-icon"><i class="fas fa-id-card fa-2x"></i></div>
                                 Documentos
@@ -86,15 +85,20 @@
                                     <a class="nav-link" href="<?php echo base_url; ?>Vehiculos">Vehiculos</a>
                                 </nav>
                             </div>
-                        <?php } ?>
                         <a class="nav-link" href="<?php echo base_url; ?>Alquiler">
-                            <div class="sb-nav-link-icon"><i class="fas fa-hourglass-start fa-2x"></i></div>
-                            Alquiler de Vehículos
+                                <div class="sb-nav-link-icon"><i class="fas fa-hourglass-start fa-2x"></i></div>
+                                Alquiler de Vehículos
                         </a>
-                        <a class="nav-link" href="<?php echo base_url; ?>Alquiler/pdfAlquiler" target="_blank">
-                            <div class="sb-nav-link-icon"><i class="fas fa-file-pdf fa-2x"></i></div>
-                            Reporte Prestamo
-                        </a>
+                        <?php if ($isAdmin) : ?>
+                            <a class="nav-link" href="<?php echo base_url; ?>Alquiler/pdfAlquiler" target="_blank">
+                                <div class="sb-nav-link-icon"><i class="fas fa-file-pdf fa-2x"></i></div>
+                                Reporte Prestamo
+                            </a>
+                            <a class="nav-link" href="<?php echo base_url; ?>Alquiler/pdfAlquilerMensual" target="_blank">
+                                <div class="sb-nav-link-icon"><i class="fas fa-file-pdf fa-2x"></i></div>
+                                Reporte Mensual Prestamo
+                            </a>
+                        <?php endif; ?>
                     </div>
                 </div>
                 <div class="sb-sidenav-footer">

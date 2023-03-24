@@ -1,6 +1,7 @@
 <?php include "Views/Templates/header.php"; ?>
 <div class="row">
     <div class="col-xl-3 col-md-3 col-sm-6">
+        <?php if(isset($_SESSION['rol']) && $_SESSION['rol'] == 'ADMIN'): ?>
         <div class="card text-primary mb-4">
             <div class="card-body">
                 <i class="fas fa-user fa-2x"></i> Usuarios
@@ -15,6 +16,7 @@
                 <div class="small text-white"><i class="fas fa-angle-right"></i></div>
             </div>
         </div>
+        <?php endif; ?>
     </div>
     <div class="col-xl-3 col-md-3 col-sm-6">
         <div class="card text-success mb-4">

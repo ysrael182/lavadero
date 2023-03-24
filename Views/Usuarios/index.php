@@ -75,10 +75,17 @@
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="form-floating mb-3" data-bs-toggle="tooltip" data-bs-placement="bottom" title="El correo es requerido">
+                            <div class="form-floating mb-3" data-bs-toggle="tooltip" data-bs-placement="bottom" title="El telefono es requerido">
                                 <input id="telefono" class="form-control" type="number" name="telefono" placeholder="Teléfono" required>
                                 <label for="telefono"><i class="fas fa-phone"></i> Teléfono <span class="text-danger fw-bold">*</span></label>
                             </div>
+                        </div>
+                        <div class="col-md-6">
+                            <select class="form-select form-select-lg mb-3" id="tipoUsuario" name="tipoUsuario" aria-label="Default select example">
+                                <option selected>Rol</option>
+                                <option value="ADMIN">Admin</option>
+                                <option value="USER">User</option>
+                            </select>
                         </div>
                     </div>
                     <div class="row" id="claves">

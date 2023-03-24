@@ -46,6 +46,7 @@ class Usuarios extends Controller{
                 $_SESSION['correo'] = $data['correo'];
                 $_SESSION['perfil'] = $data['perfil'];
                 $_SESSION['activo'] = true;
+                $_SESSION['rol'] = $data['rol'];
                 $msg = "ok";
             }else{
                 $msg = "Usuario o contraseña incorrecta";
@@ -69,7 +70,8 @@ class Usuarios extends Controller{
             $confirmar = strClean($_POST['confirmar']);
             $id = strClean($_POST['id']);
             $hash = hash("SHA256", $clave);
-            if (empty($usuario) || empty($nombre) || empty($correo) || empty($telefono)) {
+            $rol = strClean($_POST['tipoUsuario']);
+            if (empty($usuario) || empty($nombre) || empty($correo) || empty($telefono) || empty($rol)) {
                 $msg = array('msg' => 'Todo los campos son obligatorios', 'icono' => 'warning');
             } else {
                 if ($id == "") {
@@ -77,7 +79,7 @@ class Usuarios extends Controller{
                         if ($clave != $confirmar) {
                             $msg = array('msg' => 'Las contraseña no coinciden', 'icono' => 'warning');
                         } else {
-                            $data = $this->model->registrarUsuario($usuario, $nombre, $correo, $telefono, $hash);
+                            $data = $this->model->registrarUsuario($usuario, $nombre, $correo, $telefono, $hash, $rol);
                             if ($data == "ok") {
                                 $msg = array('msg' => 'Usuario registrado con éxito', 'icono' => 'success');
                             } else if ($data == "existe") {

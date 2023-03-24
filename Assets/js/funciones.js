@@ -440,6 +440,7 @@ function frmUsuario() {
     document.getElementById("title").textContent = "Nuevo Usuario";
     document.getElementById("btnAccion").textContent = "Registrar";
     document.getElementById("claves").classList.remove("d-none");
+    document.getElementById("tipoUsuario").classList.remove("d-none");
     document.getElementById("formulario").reset();
     document.getElementById("id").value = "";
     myModal.show();
@@ -484,6 +485,7 @@ function btnEditarUser(id) {
             document.getElementById("correo").value = res.correo;
             document.getElementById("telefono").value = res.telefono;
             document.getElementById("claves").classList.add("d-none");
+            document.getElementById("tipoUsuario").classList.add("d-none");
             myModal.show();
         }
     }
